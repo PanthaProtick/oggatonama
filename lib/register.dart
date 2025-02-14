@@ -17,7 +17,7 @@ class Register extends StatelessWidget{
 
 
     return Scaffold(
-        backgroundColor: Color(0xFF1D1616),
+        backgroundColor: Color(0xFF1D1610),
         body: SingleChildScrollView(
           child: Column(
             children: [
