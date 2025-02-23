@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "133326199109",
+    "project_id": "oggatonama-591021",
+    "storage_bucket": "oggatonama-591021.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:133326199109:android:eaade266b84e34f768c62c",
+        "android_client_info": {
+          "package_name": "com.example.oggatonama"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmcdPplrZIzgN_2jXkD9iHpnh2OCh4Wig"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
