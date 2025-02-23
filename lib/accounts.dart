@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:oggatonama/register.dart';
+import 'package:oggatonama/registerPage.dart';
 
 import 'login.dart';
 

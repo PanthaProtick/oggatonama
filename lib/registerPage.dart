@@ -5,7 +5,6 @@ class Register extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     final OutlineInputBorder border=OutlineInputBorder(
       borderSide: BorderSide(
         width: 2,
@@ -45,9 +44,9 @@ class Register extends StatelessWidget{
                                 child: Text(
                                   'Enter first name',
                                   style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14,
-                                    color: Color(0xFFEEEEEE)
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14,
+                                      color: Color(0xFFEEEEEE)
                                   ),
                                 ),
                               ),
