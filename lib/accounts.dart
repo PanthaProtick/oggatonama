@@ -22,7 +22,7 @@ class Accounts extends StatelessWidget{
                 style: TextStyle(
                   fontWeight: FontWeight.w800,
                   fontSize: 56,
-                  color: Color(0xFFD84040)
+                  color: Color(0xFFD84045)
                 ),
               ),
             ),
