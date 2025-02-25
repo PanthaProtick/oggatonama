@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:oggatonama/dashboard.dart';
+import 'package:get/get.dart';
+import 'Controllers/login_controller.dart';
 
-class Login extends StatelessWidget{
+class Login extends StatelessWidget {
   const Login({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    final OutlineInputBorder border=OutlineInputBorder(
+    final LoginController controller = Get.put(LoginController());
+
+    final OutlineInputBorder border = OutlineInputBorder(
       borderSide: BorderSide(
         width: 2,
         style: BorderStyle.solid,
@@ -16,9 +18,8 @@ class Login extends StatelessWidget{
       borderRadius: BorderRadius.circular(16),
     );
 
-
     return Scaffold(
-      backgroundColor: Color(0xFF1D1616),
+      backgroundColor: const Color(0xFF1D1616),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -29,114 +30,106 @@ class Login extends StatelessWidget{
                 style: TextStyle(
                     fontWeight: FontWeight.w800,
                     fontSize: 36,
-                    color: Color(0xFFD84040)
-                ),
+                    color: const Color(0xFFD84040)),
               ),
             ),
-            Column(
-                children:[
-                  Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(8,4,8,4),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Enter phone number or email address',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14,
-                                    color: Color(0xFFEEEEEE)
-                                ),
-                              ),
-                            ),
+            Column(children: [
+              Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Enter phone number or email address',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14,
+                                color: Color(0xFFEEEEEE)),
                           ),
-                          TextField(
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              focusedBorder: border,
-                              enabledBorder: border,
-                              hintText: 'Phone Number or Email Address',
-                              hintStyle: TextStyle(
-                                color: Colors.black54,
-                              ),
-                            ),
-                          )
-                        ],
-                      )
-                  ),
-                ]
-            ),
-            Column(
-                children:[
-                  Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(8,4,8,4),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Enter password',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14,
-                                    color: Color(0xFFEEEEEE)
-                                ),
-                              ),
-                            ),
+                        ),
+                      ),
+                      TextField(
+                        controller: controller.emailOrPhoneController,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          focusedBorder: border,
+                          enabledBorder: border,
+                          hintText: 'Phone Number or Email Address',
+                          hintStyle: const TextStyle(
+                            color: Colors.black54,
                           ),
-                          TextField(
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              focusedBorder: border,
-                              enabledBorder: border,
-                              hintText: 'Password',
-                              hintStyle: TextStyle(
-                                color: Colors.black54,
-                              ),
-                            ),
-                          )
-                        ],
+                        ),
                       )
-                  ),
-                ]
-            ),
+                    ],
+                  ))
+            ]),
+            Column(children: [
+              Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Enter password',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14,
+                                color: Color(0xFFEEEEEE)),
+                          ),
+                        ),
+                      ),
+                      TextField(
+                        controller: controller.passwordController,
+                        keyboardType: TextInputType.text,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          focusedBorder: border,
+                          enabledBorder: border,
+                          hintText: 'Password',
+                          hintStyle: const TextStyle(
+                            color: Colors.black54,
+                          ),
+                        ),
+                      )
+                    ],
+                  ))
+            ]),
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 30, 8, 8),
-              child: ElevatedButton.icon(
-                onPressed: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context)=>Dashboard())
-                  );
+              child: Obx(() => controller.isLoading.value
+                  ? const CircularProgressIndicator()
+                  : ElevatedButton.icon(
+                onPressed: () async{
+                  controller.login(context);
                 },
                 style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity,75),
-                    backgroundColor: Color(0xFF8E1616),
-                    foregroundColor: Color(0xFFEEEEEE)
-                ),
-                label: Text(
+                    minimumSize: const Size(double.infinity, 75),
+                    backgroundColor: const Color(0xFF8E1616),
+                    foregroundColor: const Color(0xFFEEEEEE)),
+                label: const Text(
                   'Login',
                   style: TextStyle(
                     fontWeight: FontWeight.w800,
                     fontSize: 22,
                   ),
                 ),
-                icon: Icon(Icons.login_outlined,color: Color(0xFFEEEEEE)),
-              ),
+                icon: const Icon(Icons.login_outlined,
+                    color: Color(0xFFEEEEEE)),
+              )),
             ),
           ],
         ),
-      )
+      ),
     );
   }
-
 }

@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:oggatonama/accounts.dart';
+import 'package:oggatonama/dashboard.dart';
 import 'package:oggatonama/firebase_options.dart';
 
 void main() async{
@@ -12,12 +14,24 @@ void main() async{
 class Oggatonama extends StatelessWidget {
   const Oggatonama({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Accounts(),
+        home: const Accounts()/*StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if(snapshot.connectionState==ConnectionState.waiting){
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if(snapshot.data!=null){
+              return const Dashboard();
+            }
+            return const Accounts();
+          }
+        )*/,
       );
   }
 }

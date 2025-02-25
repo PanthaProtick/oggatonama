@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:oggatonama/registerPage.dart';
+import 'package:oggatonama/register_page.dart';
 
 import 'login.dart';
 
@@ -56,7 +56,7 @@ class Accounts extends StatelessWidget{
                   onPressed: (){
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context)=>Register())
+                      MaterialPageRoute(builder: (context)=>RegisterPage())
                     );
                   },
                   style: ElevatedButton.styleFrom(

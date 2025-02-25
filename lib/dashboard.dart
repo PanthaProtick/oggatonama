@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatelessWidget{
@@ -57,6 +58,27 @@ class Dashboard extends StatelessWidget{
                 ),
                 label: Text(
                   'Register dead body',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 22,
+                  ),
+                ),
+                icon: Icon(Icons.pending_actions,color: Color(0xFFEEEEEE)),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
+              child: ElevatedButton.icon(
+                onPressed: (){
+                  FirebaseAuth.instance.signOut();
+                },
+                style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity,75),
+                    backgroundColor: Color(0xFF8E1616),
+                    foregroundColor: Color(0xFFEEEEEE)
+                ),
+                label: Text(
+                  'Sign out',
                   style: TextStyle(
                     fontWeight: FontWeight.w800,
                     fontSize: 22,
