@@ -10,8 +10,7 @@ class ClaimBodyPage extends StatefulWidget {
 class _ClaimBodyPageState extends State<ClaimBodyPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String? selectedAgeRange = 'All';
-  List<String> ageRanges = ['All', '0-10', '11-20', '21-30', '31-40', '41-50',
-    '51-60', '61-70', '71-80', '81-90', '91+'];
+  List<String> ageRanges = ['All', '0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71-80', '81-90', '91+'];
 
   String? selectedDivision = 'All';
   List<String> divisions = ['All', 'Barisal', 'Chattogram', 'Dhaka', 'Khulna', 'Mymensingh', 'Rajshahi', 'Rangpur', 'Sylhet'];
@@ -24,29 +23,22 @@ class _ClaimBodyPageState extends State<ClaimBodyPage> {
     if (age == -1) return false;
 
     switch (range) {
-      case '0-10':
-        return age >= 0 && age <= 10;
-      case '11-20':
-        return age >= 11 && age <= 20;
-      case '21-30':
-        return age >= 21 && age <= 30;
-      case '31-40':
-        return age >= 31 && age <= 40;
-      case '41-50':
-        return age >= 41 && age <= 50;
-      case '51-60':
-        return age >= 51 && age <= 60;
-      case '61-70':
-        return age >= 61 && age <= 70;
-      case '71-80':
-        return age >= 71 && age <= 80;
-      case '81-90':
-        return age >= 81 && age <= 90;
-      case '91+':
-        return age >= 91;
-      default:
-        return true;
+      case '0-10': return age >= 0 && age <= 10;
+      case '11-20': return age >= 11 && age <= 20;
+      case '21-30': return age >= 21 && age <= 30;
+      case '31-40': return age >= 31 && age <= 40;
+      case '41-50': return age >= 41 && age <= 50;
+      case '51-60': return age >= 51 && age <= 60;
+      case '61-70': return age >= 61 && age <= 70;
+      case '71-80': return age >= 71 && age <= 80;
+      case '81-90': return age >= 81 && age <= 90;
+      case '91+': return age >= 91;
+      default: return true;
     }
+  }
+
+  Future<void> _toggleClaimStatus(String docId, bool isClaimed) async {
+    await _firestore.collection('reported_bodies').doc(docId).update({'claimed': !isClaimed});
   }
 
   @override
@@ -64,15 +56,10 @@ class _ClaimBodyPageState extends State<ClaimBodyPage> {
                 border: OutlineInputBorder(),
               ),
               items: divisions.map((division) {
-                return DropdownMenuItem(
-                  value: division,
-                  child: Text(division),
-                );
+                return DropdownMenuItem(value: division, child: Text(division));
               }).toList(),
               onChanged: (value) {
-                setState(() {
-                  selectedDivision = value;
-                });
+                setState(() { selectedDivision = value; });
               },
             ),
           ),
@@ -85,15 +72,10 @@ class _ClaimBodyPageState extends State<ClaimBodyPage> {
                 border: OutlineInputBorder(),
               ),
               items: ageRanges.map((age) {
-                return DropdownMenuItem(
-                  value: age,
-                  child: Text(age),
-                );
+                return DropdownMenuItem(value: age, child: Text(age));
               }).toList(),
               onChanged: (value) {
-                setState(() {
-                  selectedAgeRange = value;
-                });
+                setState(() { selectedAgeRange = value; });
               },
             ),
           ),
@@ -122,14 +104,18 @@ class _ClaimBodyPageState extends State<ClaimBodyPage> {
                 return ListView.builder(
                   itemCount: reports.length,
                   itemBuilder: (context, index) {
-                    var report = reports[index].data() as Map<String, dynamic>;
-                    Timestamp? timestamp = report['estimated_death_time'];
+                    var report = reports[index];
+                    var data = report.data() as Map<String, dynamic>;
+                    String docId = report.id;
+
+                    Timestamp? timestamp = data['estimated_death_time'];
                     String formattedDeathTime = 'Unknown';
                     if (timestamp != null) {
                       DateTime dateTime = timestamp.toDate();
                       formattedDeathTime = DateFormat('MMMM d, yyyy h:mm a').format(dateTime);
                     }
-                    String reasonOfDeath = report['reason_of_death'] ?? 'Unknown';
+                    String reasonOfDeath = data['reason_of_death'] ?? 'Unknown';
+                    bool isClaimed = data['claimed'] ?? false;
 
                     return Card(
                       margin: EdgeInsets.all(10),
@@ -139,20 +125,35 @@ class _ClaimBodyPageState extends State<ClaimBodyPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Reporter: ${report['reporter_name'] ?? 'Unknown'}", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                            Text("Reporter: ${data['reporter_name'] ?? 'Unknown'}", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                             SizedBox(height: 5),
-                            Text("Contact: ${report['contact_number'] ?? 'N/A'}"),
-                            Text("Discovery Location: ${report['discovery_location'] ?? 'N/A'}"),
-                            Text("Current Location: ${report['current_location'] ?? 'N/A'}"),
-                            Text("Height: ${report['height'] ?? 'N/A'}"),
-                            Text("Gender: ${report['gender'] ?? 'N/A'}"),
-                            Text("Clothing: ${report['clothing'] ?? 'N/A'}"),
-                            Text("Approximate Age: ${report['approximate_age'] ?? 'N/A'}"),
-                            Text("Details: ${report['details'] ?? 'N/A'}"),
+                            Text("Contact: ${data['contact_number'] ?? 'N/A'}"),
+                            Text("Discovery Location: ${data['discovery_location'] ?? 'N/A'}"),
+                            Text("Current Location: ${data['current_location'] ?? 'N/A'}"),
+                            Text("Height: ${data['height'] ?? 'N/A'}"),
+                            Text("Gender: ${data['gender'] ?? 'N/A'}"),
+                            Text("Clothing: ${data['clothing'] ?? 'N/A'}"),
+                            Text("Approximate Age: ${data['approximate_age'] ?? 'N/A'}"),
+                            Text("Details: ${data['details'] ?? 'N/A'}"),
                             SizedBox(height: 5),
                             Text("Estimated Death Time: $formattedDeathTime", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
                             SizedBox(height: 5),
                             Text("Reason of Death: $reasonOfDeath", style: TextStyle(fontWeight: FontWeight.bold)),
+                            SizedBox(height: 10),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: ElevatedButton(
+                                onPressed: () => _toggleClaimStatus(docId, isClaimed),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: isClaimed ? Colors.green : Colors.red,
+                                ),
+                                child: Text(
+                                  isClaimed ? "Claimed" : "Unclaimed",
+                                  style: TextStyle(color: Colors.white), // Change text color
+                                ),
+
+                              ),
+                            ),
                           ],
                         ),
                       ),
