@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 class ClaimBodyPage extends StatefulWidget {
+  const ClaimBodyPage({super.key});
+
   @override
   _ClaimBodyPageState createState() => _ClaimBodyPageState();
 }
