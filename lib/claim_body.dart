@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart'; // Import the URL launcher package
 
 class ClaimBodyPage extends StatefulWidget {
   @override
@@ -10,10 +11,16 @@ class ClaimBodyPage extends StatefulWidget {
 class _ClaimBodyPageState extends State<ClaimBodyPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String? selectedAgeRange = 'All';
-  List<String> ageRanges = ['All', '0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71-80', '81-90', '91+'];
+  List<String> ageRanges = [
+    'All', '0-10', '11-20', '21-30', '31-40', '41-50',
+    '51-60', '61-70', '71-80', '81-90', '91+'
+  ];
 
   String? selectedDivision = 'All';
-  List<String> divisions = ['All', 'Barisal', 'Chattogram', 'Dhaka', 'Khulna', 'Mymensingh', 'Rajshahi', 'Rangpur', 'Sylhet'];
+  List<String> divisions = [
+    'All', 'Barisal', 'Chattogram', 'Dhaka', 'Khulna',
+    'Mymensingh', 'Rajshahi', 'Rangpur', 'Sylhet'
+  ];
 
   bool isAgeInRange(String? ageString, String range) {
     if (ageString == null) return false;
@@ -41,12 +48,25 @@ class _ClaimBodyPageState extends State<ClaimBodyPage> {
     await _firestore.collection('reported_bodies').doc(docId).update({'claimed': !isClaimed});
   }
 
+  // Function to launch the phone dialer with the given phone number.
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri callUri = Uri(scheme: 'tel', path: phoneNumber);
+    if (await canLaunchUrl(callUri)) {
+      await launchUrl(callUri);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not launch dialer')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Claim Reported Bodies")),
       body: Column(
         children: [
+          // Division filter
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: DropdownButtonFormField<String>(
@@ -56,13 +76,17 @@ class _ClaimBodyPageState extends State<ClaimBodyPage> {
                 border: OutlineInputBorder(),
               ),
               items: divisions.map((division) {
-                return DropdownMenuItem(value: division, child: Text(division));
+                return DropdownMenuItem(
+                  value: division,
+                  child: Text(division),
+                );
               }).toList(),
               onChanged: (value) {
                 setState(() { selectedDivision = value; });
               },
             ),
           ),
+          // Age filter
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: DropdownButtonFormField<String>(
@@ -72,7 +96,10 @@ class _ClaimBodyPageState extends State<ClaimBodyPage> {
                 border: OutlineInputBorder(),
               ),
               items: ageRanges.map((age) {
-                return DropdownMenuItem(value: age, child: Text(age));
+                return DropdownMenuItem(
+                  value: age,
+                  child: Text(age),
+                );
               }).toList(),
               onChanged: (value) {
                 setState(() { selectedAgeRange = value; });
@@ -96,7 +123,8 @@ class _ClaimBodyPageState extends State<ClaimBodyPage> {
                   String? discoveryLocation = data['discovery_location'];
 
                   bool isAgeValid = selectedAgeRange == 'All' || isAgeInRange(ageString, selectedAgeRange!);
-                  bool isLocationValid = selectedDivision == 'All' || (discoveryLocation?.contains(selectedDivision!) ?? false);
+                  bool isLocationValid = selectedDivision == 'All' ||
+                      (discoveryLocation?.contains(selectedDivision!) ?? false);
 
                   return isAgeValid && isLocationValid;
                 }).toList();
@@ -116,6 +144,7 @@ class _ClaimBodyPageState extends State<ClaimBodyPage> {
                     }
                     String reasonOfDeath = data['reason_of_death'] ?? 'Unknown';
                     bool isClaimed = data['claimed'] ?? false;
+                    String phoneNumber = data['contact_number'] ?? '';
 
                     return Card(
                       margin: EdgeInsets.all(10),
@@ -125,9 +154,10 @@ class _ClaimBodyPageState extends State<ClaimBodyPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Reporter: ${data['reporter_name'] ?? 'Unknown'}", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                            Text("Reporter: ${data['reporter_name'] ?? 'Unknown'}",
+                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                             SizedBox(height: 5),
-                            Text("Contact: ${data['contact_number'] ?? 'N/A'}"),
+                            Text("Contact: ${phoneNumber.isNotEmpty ? phoneNumber : 'N/A'}"),
                             Text("Discovery Location: ${data['discovery_location'] ?? 'N/A'}"),
                             Text("Current Location: ${data['current_location'] ?? 'N/A'}"),
                             Text("Height: ${data['height'] ?? 'N/A'}"),
@@ -136,23 +166,46 @@ class _ClaimBodyPageState extends State<ClaimBodyPage> {
                             Text("Approximate Age: ${data['approximate_age'] ?? 'N/A'}"),
                             Text("Details: ${data['details'] ?? 'N/A'}"),
                             SizedBox(height: 5),
-                            Text("Estimated Death Time: $formattedDeathTime", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                            Text("Estimated Death Time: $formattedDeathTime",
+                                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
                             SizedBox(height: 5),
-                            Text("Reason of Death: $reasonOfDeath", style: TextStyle(fontWeight: FontWeight.bold)),
+                            Text("Reason of Death: $reasonOfDeath",
+                                style: TextStyle(fontWeight: FontWeight.bold)),
                             SizedBox(height: 10),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: ElevatedButton(
-                                onPressed: () => _toggleClaimStatus(docId, isClaimed),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: isClaimed ? Colors.green : Colors.red,
+                            // Row containing Claim and Call buttons.
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () => _toggleClaimStatus(docId, isClaimed),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: isClaimed ? Colors.green : Colors.red,
+                                  ),
+                                  child: Text(
+                                    isClaimed ? "Claimed" : "Unclaimed",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
-                                child: Text(
-                                  isClaimed ? "Claimed" : "Unclaimed",
-                                  style: TextStyle(color: Colors.white), // Change text color
+                                SizedBox(width: 10),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    if (phoneNumber.isNotEmpty) {
+                                      _makePhoneCall(phoneNumber);
+                                    } else {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(content: Text('No contact number available')),
+                                      );
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.blue,
+                                  ),
+                                  child: Text(
+                                    "Call",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
-
-                              ),
+                              ],
                             ),
                           ],
                         ),
