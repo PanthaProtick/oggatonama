@@ -20,115 +20,132 @@ class Login extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFF1D1616),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 40, 8, 8),
+      body: Stack(
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 50),
               child: Text(
-                'Login',
+                'Oggatonama',
                 style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 36,
-                    color: const Color(0xFFD84040)),
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
-            Column(children: [
-              Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-                        child: Align(
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.7,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(100),
+                ),
+              ),
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: SingleChildScrollView
+                  (
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Login',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 40,
+                          ),
+                        ),
+                        Text('Sign in to continue.'),
+                        const SizedBox(height: 40),
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Enter phone number or email address',
+                            'Email',
                             style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                                color: Color(0xFFEEEEEE)),
+                              color: Colors.black,
+                            ),
                           ),
                         ),
-                      ),
-                      TextField(
-                        controller: controller.emailOrPhoneController,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          focusedBorder: border,
-                          enabledBorder: border,
-                          hintText: 'Phone Number or Email Address',
-                          hintStyle: const TextStyle(
-                            color: Colors.black54,
+                        TextField(
+                          controller: controller.emailOrPhoneController,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.grey[300],
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            focusedBorder: border,
+                            enabledBorder: border,
+                            hintText: 'Phone Number or Email Address',
+                            hintStyle: const TextStyle(
+                              color: Colors.black54,
+                            ),
                           ),
                         ),
-                      )
-                    ],
-                  ))
-            ]),
-            Column(children: [
-              Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-                        child: Align(
+                        const SizedBox(height: 15),
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Enter password',
+                            'Password',
                             style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                                color: Color(0xFFEEEEEE)),
+                              color: Colors.black,
+                            ),
                           ),
                         ),
-                      ),
-                      TextField(
-                        controller: controller.passwordController,
-                        keyboardType: TextInputType.text,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          focusedBorder: border,
-                          enabledBorder: border,
-                          hintText: 'Password',
-                          hintStyle: const TextStyle(
-                            color: Colors.black54,
+                        TextField(
+                          controller: controller.passwordController,
+                          keyboardType: TextInputType.text,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.grey[300],
+                            focusedBorder: border,
+                            enabledBorder: border,
+                            hintText: 'Password',
+                            hintStyle: const TextStyle(
+                              color: Colors.black54,
+                            ),
                           ),
                         ),
-                      )
-                    ],
-                  ))
-            ]),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 30, 8, 8),
-              child: Obx(() => controller.isLoading.value
-                  ? const CircularProgressIndicator()
-                  : ElevatedButton.icon(
-                onPressed: () async{
-                  controller.login(context);
-                },
-                style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 75),
-                    backgroundColor: const Color(0xFF8E1616),
-                    foregroundColor: const Color(0xFFEEEEEE)),
-                label: const Text(
-                  'Login',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 22,
+                        SizedBox(height: 20),
+                        Obx(() => controller.isLoading.value
+                            ? CircularProgressIndicator()
+                            : SizedBox(
+                                width: double.infinity,
+                                height: 50,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFF1D1616),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    controller.login(context);
+                                  },
+                                  child: Text(
+                                    'Login',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )),
+                      ],
+                    ),
                   ),
                 ),
-                icon: const Icon(Icons.login_outlined,
-                    color: Color(0xFFEEEEEE)),
-              )),
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
