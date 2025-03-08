@@ -18,27 +18,12 @@ class CustomDrawer extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const CircleAvatar(
-                    radius: 30,
-                  ),
-                  const SizedBox(height: 10.0),
-                  const Text(
-                    ' K A T Z ',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'email',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
+                  Icon(
+                    Icons.account_circle,
+                    size: 100,
+                    color: Colors.white,
+                  )
+                  
                 ],
               ),
             ),
