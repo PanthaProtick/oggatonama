@@ -46,62 +46,65 @@ class RegisterPage extends StatelessWidget {
           child: Center(
             child: Form(
               key: controller.formKey,
-              child: Column(
-                children: [
-                  const Text(
-                    'Register',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 40,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Column(
+                  children: [
+                    const Text(
+                      'Register',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 40,
+                      ),
                     ),
-                  ),
-                  const Text('Sign up to continue.'),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 40),
-                            _buildTextField('First Name', controller.firstNameController, TextInputType.text, border),
-                            _buildTextField('Last Name', controller.lastNameController, TextInputType.text, border),
-                            _buildTextField('Email', controller.emailController, TextInputType.emailAddress, border),
-                            _buildTextField('Password', controller.passwordController, TextInputType.text, border, obscureText: true),
-                            _buildTextField('Confirm Password', controller.confirmPasswordController, TextInputType.text, border, obscureText: true),
-                            _buildTextField('NID', controller.nidController, TextInputType.number, border),
-                            _buildTextField('Phone', controller.phoneController, TextInputType.phone, border),
-                            const SizedBox(height: 20),
-                            Obx(() => controller.isLoading.value
-                                ? const CircularProgressIndicator()
-                                : SizedBox(
-                                    width: double.infinity,
-                                    height: 50,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xFF1D1616),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10),
+                    const Text('Sign up to continue.'),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 40),
+                              _buildTextField('First Name', controller.firstNameController, TextInputType.text, border),
+                              _buildTextField('Last Name', controller.lastNameController, TextInputType.text, border),
+                              _buildTextField('Email', controller.emailController, TextInputType.emailAddress, border),
+                              _buildTextField('Password', controller.passwordController, TextInputType.text, border, obscureText: true),
+                              _buildTextField('Confirm Password', controller.confirmPasswordController, TextInputType.text, border, obscureText: true),
+                              _buildTextField('NID', controller.nidController, TextInputType.number, border),
+                              _buildTextField('Phone', controller.phoneController, TextInputType.phone, border),
+                              const SizedBox(height: 20),
+                              Obx(() => controller.isLoading.value
+                                  ? const CircularProgressIndicator()
+                                  : SizedBox(
+                                      width: double.infinity,
+                                      height: 50,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: const Color(0xFF1D1616),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          controller.register(context);
+                                        },
+                                        child: const Text(
+                                          'Register',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                       ),
-                                      onPressed: () {
-                                        controller.register(context);
-                                      },
-                                      child: const Text(
-                                        'Register',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  )),
-                          ],
+                                    )),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

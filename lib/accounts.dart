@@ -31,7 +31,7 @@ class Accounts extends StatelessWidget{
                         'Oggatonama !',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 30
+                          fontSize: 25
                         ),
                       ),
                       Text(

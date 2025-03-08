@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:oggatonama/forgot_password.dart';
 import 'Controllers/login_controller.dart';
 
 class Login extends StatelessWidget {
@@ -114,6 +115,23 @@ class Login extends StatelessWidget {
                               color: Colors.black54,
                             ),
                           ),
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPassword()));
+                              },
+                              child: Text(
+                                'Forgot Password?',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                         SizedBox(height: 20),
                         Obx(() => controller.isLoading.value

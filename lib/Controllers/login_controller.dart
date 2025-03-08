@@ -13,6 +13,15 @@ class LoginController extends GetxController {
 
   RxBool isLoading = false.obs;
 
+  // Reset Password
+  Future<void> resetPassword(String email) async {
+    try {
+    await _auth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   Future<void> login(BuildContext context) async {
     isLoading.value = true;
     try {
