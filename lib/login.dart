@@ -20,20 +20,21 @@ class Login extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFF1D1616),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(
+          color: Colors.white
+        ),
+      ),
       body: Stack(
         children: [
           Align(
             alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: Text(
-                'Oggatonama',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
+            child: Image.asset(
+              'assets/logoWhite.png',
+              height: 100,
+              width: 100,
+              fit: BoxFit.cover,
             ),
           ),
           Align(
