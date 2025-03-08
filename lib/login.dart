@@ -32,8 +32,8 @@ class Login extends StatelessWidget {
             alignment: Alignment.topCenter,
             child: Image.asset(
               'assets/logoWhite.png',
-              height: 100,
-              width: 100,
+              height: 125,
+              width: 125,
               fit: BoxFit.cover,
             ),
           ),

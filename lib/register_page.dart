@@ -16,26 +16,27 @@ class RegisterPage extends StatelessWidget {
 
     return Scaffold(
   backgroundColor: const Color(0xFF1D1616),
+  appBar: AppBar(
+    backgroundColor: Colors.transparent,
+    iconTheme: IconThemeData(
+      color: Colors.white
+    ),
+  ),
   body: Stack(
     children: [
       Align(
         alignment: Alignment.topCenter,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 25),
-          child: const Text(
-            'Oggatonama',
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+        child: Image.asset(
+            'assets/logoWhite.png',
+            height: 125,
+            width: 125,
+            fit: BoxFit.cover,
           ),
-        ),
       ),
       Align(
         alignment: Alignment.bottomCenter,
         child: Container(
-          height: MediaQuery.of(context).size.height * 0.85,
+          height: MediaQuery.of(context).size.height * 0.7,
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
