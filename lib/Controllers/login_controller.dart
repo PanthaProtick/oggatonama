@@ -33,7 +33,7 @@ class LoginController extends GetxController {
       isLoading.value = false;
       Get.snackbar('Success', 'Login successful');
 
-      Navigator.push(
+      Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => Dashboard())); // Navigate to Dashboard
 

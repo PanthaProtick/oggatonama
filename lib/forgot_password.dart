@@ -84,9 +84,6 @@ class ForgotPassword extends StatelessWidget {
                                   ),
                                   onPressed: () {
                                     controller.resetPassword(_emailController.text);
-                                    SnackBar(content: Text(
-                                      'Email sent!'
-                                    ));
                                   },
                                   child: Text(
                                     'Submit',

@@ -1,110 +1,77 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:oggatonama/report_body.dart'; // Import the Report Body Page
-import 'package:oggatonama/accounts.dart'; // Import the Accounts Page
-import 'package:oggatonama/claim_body.dart'; // Import the ClaimBodyPage
+import 'package:oggatonama/drawer.dart';
+import 'package:oggatonama/home_page.dart';
+import 'package:oggatonama/report_body.dart';
+import 'package:oggatonama/claim_body.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
 
   @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  int _currentIndex = 0;
+
+  final List<String> screenNames = [
+    'Oggatonama', 'Report Found Body', 'Claim Reported Body'
+  ];
+  @override
   Widget build(BuildContext context) {
+    final List<Widget> screens = [
+      HomePage(),
+      ReportPage(),
+      ClaimBodyPage()
+    ];
     return Scaffold(
       backgroundColor: Color(0xFF1D1616),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 6, 12, 72),
-              child: Text(
-                'Oggatonama',
-                style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 56,
-                    color: Color(0xFFD84040)),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  // Navigate to ClaimBodyPage
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ClaimBodyPage()), // Updated here
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 75),
-                  foregroundColor: Color(0xFF8E1616),
-                  backgroundColor: Color(0xFFEEEEEE),
-                ),
-                label: Text(
-                  'Claim/Search dead body',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 22,
-                  ),
-                ),
-                icon: Icon(Icons.search, color: Color(0xFFD84040)),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  // Navigate to Report Body Page
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ReportPage()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 75),
-                    backgroundColor: Color(0xFF8E1616),
-                    foregroundColor: Color(0xFFEEEEEE)),
-                label: Text(
-                  'Register dead body',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 22,
-                  ),
-                ),
-                icon: Icon(Icons.pending_actions, color: Color(0xFFEEEEEE)),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
-              child: ElevatedButton.icon(
-                onPressed: () async {
-                  await FirebaseAuth.instance.signOut(); // Sign out
-
-                  // Navigate to Accounts Page and remove Dashboard from stack
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => Accounts()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 75),
-                    backgroundColor: Color(0xFF8E1616),
-                    foregroundColor: Color(0xFFEEEEEE)),
-                label: Text(
-                  'Sign out',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 22,
-                  ),
-                ),
-                icon: Icon(Icons.logout, color: Color(0xFFEEEEEE)),
-              ),
-            ),
-          ],
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        title: Text(
+          screenNames[_currentIndex],
+        ),
+        titleTextStyle: TextStyle(
+          fontWeight: FontWeight.w800,
+          fontSize: 26,
+          color: Colors.white
+        ),
+        iconTheme: IconThemeData(
+          color: Colors.white
         ),
       ),
+      drawer: CustomDrawer(),
+      body: SafeArea(child: screens[_currentIndex]),
+       bottomNavigationBar: BottomNavigationBar(
+          elevation: 0.0,
+          backgroundColor: Colors.transparent,
+          iconSize: 30,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.red,
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              activeIcon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search_outlined),
+              activeIcon: Icon(Icons.search),
+              label: 'Claim Body',
+            ),
+            BottomNavigationBarItem(
+              activeIcon: Icon(Icons.pending_actions),
+              icon: Icon(Icons.pending_actions_rounded),
+              label: 'Report Body',
+            ),
+          ],
+       )
     );
   }
 }

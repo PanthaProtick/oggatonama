@@ -11,6 +11,9 @@ class Accounts extends StatelessWidget{
   Widget build(BuildContext context){
     return Scaffold(
       backgroundColor: Color(0xFF1D1616),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -45,7 +48,7 @@ class Accounts extends StatelessWidget{
                 ],
               ),
               SizedBox(
-                height: 200,
+                height: 300,
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
