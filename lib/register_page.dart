@@ -15,47 +15,49 @@ class RegisterPage extends StatelessWidget {
     );
 
     return Scaffold(
-      backgroundColor: const Color(0xFF1D1616),
-      body: Stack(
-        children: [
-          Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 25),
-              child: Text(
-                'Oggatonama',
-                style: const TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
+  backgroundColor: const Color(0xFF1D1616),
+  body: Stack(
+    children: [
+      Align(
+        alignment: Alignment.topCenter,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 25),
+          child: const Text(
+            'Oggatonama',
+            style: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.85,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(100),
-                ),
-              ),
-              child: Center(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Text(
-                            'Register',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 40,
-                            ),
-                          ),
-                          Text('Sign up to continue.'),
-                          //const SizedBox(height: 20),
-                      Padding(
+        ),
+      ),
+      Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.85,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(100),
+            ),
+          ),
+          child: Center(
+            child: Form(
+              key: controller.formKey,
+              child: Column(
+                children: [
+                  const Text(
+                    'Register',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 40,
+                    ),
+                  ),
+                  const Text('Sign up to continue.'),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: Column(
                           children: [
@@ -75,7 +77,7 @@ class RegisterPage extends StatelessWidget {
                                     height: 50,
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xFF8E1616),
+                                        backgroundColor: const Color(0xFF1D1616),
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(10),
                                         ),
@@ -96,15 +98,18 @@ class RegisterPage extends StatelessWidget {
                           ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ),
-        ],
+        ),
       ),
-    );
+    ],
+  ),
+);
+
   }
 
   Widget _buildTextField(String label, TextEditingController controller, TextInputType inputType, OutlineInputBorder border, {bool obscureText = false}) {

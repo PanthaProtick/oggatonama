@@ -18,6 +18,7 @@ class RegisterController extends GetxController {
 
   Future<void> register(BuildContext context) async {
     if (!formKey.currentState!.validate()) {
+      print('Empty!');
       return;
     }
 
