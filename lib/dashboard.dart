@@ -113,6 +113,9 @@ class Dashboard extends StatelessWidget {
                 onTap: () {
                   onTap(context, index);
                 },
+                shape: Border(
+                  bottom: BorderSide()
+                ),
                   title: Text(tileName[index]),
                   titleTextStyle: TextStyle(
                       fontWeight: FontWeight.bold,
