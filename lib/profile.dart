@@ -19,6 +19,9 @@ class Profile extends StatelessWidget {
         iconTheme: IconThemeData(
           color: Colors.white
         ),
+        actions: [
+          Icon(Icons.more_vert)
+        ],
       ),
       body: Center(
         child: Column(
