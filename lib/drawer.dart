@@ -14,7 +14,7 @@ class CustomDrawer extends StatelessWidget {
             height: 215.0,
             width: double.infinity,
             child: DrawerHeader(
-              decoration: const BoxDecoration(color: Color(0xFF8E1616)),
+              decoration: const BoxDecoration(color: Colors.black),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

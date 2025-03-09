@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:oggatonama/dashboard.dart';
 
 class RegisterController extends GetxController {
   final firstNameController = TextEditingController();
@@ -48,12 +49,15 @@ class RegisterController extends GetxController {
       await Future.delayed(Duration(milliseconds: 300));
 
       // Navigate back to the Accounts page
-      if (Navigator.canPop(context)) {
-        Navigator.pop(context);
-      } else {
-        // Fallback if Navigator stack doesn't have the expected structure
-        Get.back();
-      }
+      // if (Navigator.canPop(context)) {
+      //   Navigator.pop(context);
+      // } else {
+      //   // Fallback if Navigator stack doesn't have the expected structure
+      //   Get.back();
+      // }
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Dashboard()));
     } catch (e) {
       print("Registration error: $e");
       // Show error to user

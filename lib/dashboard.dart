@@ -1,77 +1,144 @@
 import 'package:flutter/material.dart';
-import 'package:oggatonama/drawer.dart';
-import 'package:oggatonama/home_page.dart';
-import 'package:oggatonama/report_body.dart';
 import 'package:oggatonama/claim_body.dart';
+import 'package:oggatonama/drawer.dart';
+import 'package:oggatonama/report_body.dart';
 
-class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+class Dashboard extends StatelessWidget {
+  Dashboard({super.key});
 
-  @override
-  State<Dashboard> createState() => _DashboardState();
-}
-
-class _DashboardState extends State<Dashboard> {
-  int _currentIndex = 0;
-
-  final List<String> screenNames = [
-    'Oggatonama', 'Report Found Body', 'Claim Reported Body'
+  final List<String> tileName = [
+    'Report a deadbody',
+    'Claim a deadbody',
+    'Nearest Hospital'
   ];
+
+  final List<String> subtileName = [
+    'Information about disinherited deadbody',
+    'Get information from our database',
+    'Finad the nearest hospital'
+  ];
+
+  final List<String> leadingImage = [
+    'assets/report_body.png',
+    'assets/claim_body.png',
+    'assets/hospital.png',
+  ];
+
+  void onTap(BuildContext context, int index) {
+    switch(index) {
+      case 0:
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ReportPage()));
+        break;
+      case 1:
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ClaimBodyPage()));
+        break;
+      case 2:
+        //Navigator.push(context, MaterialPageRoute(builder: (context) => ReportPage()));
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final List<Widget> screens = [
-      HomePage(),
-      ReportPage(),
-      ClaimBodyPage()
-    ];
     return Scaffold(
-      backgroundColor: Color(0xFF1D1616),
+      backgroundColor: const Color.fromARGB(255, 209, 207, 207),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: Text(
-          screenNames[_currentIndex],
-        ),
-        titleTextStyle: TextStyle(
-          fontWeight: FontWeight.w800,
-          fontSize: 26,
-          color: Colors.white
-        ),
-        iconTheme: IconThemeData(
-          color: Colors.white
-        ),
+        backgroundColor: Color.fromARGB(255, 209, 207, 207),
+        title: Text('Oggatonama'),
+        titleTextStyle: TextStyle(color: Colors.black, fontSize: 25),
+        iconTheme: IconThemeData(color: Colors.black),
       ),
       drawer: CustomDrawer(),
-      body: SafeArea(child: screens[_currentIndex]),
-       bottomNavigationBar: BottomNavigationBar(
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          iconSize: 30,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.red,
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              activeIcon: Icon(Icons.home),
-              label: 'Home',
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            customContainer(),
+            Divider(
+              color: Colors.black,
+              height: 50,
+              thickness: 1,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search_outlined),
-              activeIcon: Icon(Icons.search),
-              label: 'Claim Body',
+            Text(
+              'Services',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
-            BottomNavigationBarItem(
-              activeIcon: Icon(Icons.pending_actions),
-              icon: Icon(Icons.pending_actions_rounded),
-              label: 'Report Body',
-            ),
+            SizedBox(height: 20),
+            serviceList()
           ],
-       )
+        ),
+      ),
+    );
+  }
+
+  Widget customContainer() {
+    return Container(
+      height: 150,
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+          color: Colors.black, borderRadius: BorderRadius.circular(24)),
+      child: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Text(
+                'Report unknown deadbodies !',
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 209, 207, 207),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            Expanded(flex: 1, child: Image.asset('assets/deadbody.jpg'))
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget serviceList() {
+    return Expanded(
+      child: ListView.builder(
+        scrollDirection: Axis.vertical,
+          itemCount: 3,
+          itemBuilder: (context, index) {
+            return SizedBox(
+              height: 100,
+              child: ListTile(
+                onTap: () {
+                  onTap(context, index);
+                },
+                  title: Text(tileName[index]),
+                  titleTextStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 20),
+                  subtitle: Text(subtileName[index]),
+                  leading: Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            image: Image.asset(
+                          leadingImage[index],
+                          fit: BoxFit.cover,
+                        ).image
+                      )
+                    ),
+                  ),
+                  trailing: Icon(
+                    Icons.chevron_right
+                  ),
+                ),
+            );
+          }),
     );
   }
 }
