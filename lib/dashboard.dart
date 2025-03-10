@@ -105,7 +105,7 @@ class Dashboard extends StatelessWidget {
     return Expanded(
       child: ListView.builder(
         scrollDirection: Axis.vertical,
-          itemCount: 3,
+          itemCount: 2,
           itemBuilder: (context, index) {
             return SizedBox(
               height: 100,

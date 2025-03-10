@@ -22,7 +22,7 @@ class Login extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFF1D1616),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0xFF1D1616),
         iconTheme: IconThemeData(
           color: Colors.white
         ),

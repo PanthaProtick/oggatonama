@@ -36,11 +36,7 @@ class CustomDrawer extends StatelessWidget {
               Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()));
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.settings),
-            title: const Text('Settings'),
-            onTap: () {},
-          ),
+          
           const Spacer(),
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
