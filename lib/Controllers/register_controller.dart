@@ -13,9 +13,15 @@ class RegisterController extends GetxController {
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
 
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
   final formKey = GlobalKey<FormState>();
 
   RxBool isLoading = false.obs;
+
+  User? getCurrentUser() {
+    return _firebaseAuth.currentUser;
+  }
 
   Future<void> register(BuildContext context) async {
     if (!formKey.currentState!.validate()) {
@@ -74,8 +80,9 @@ class RegisterController extends GetxController {
   }
 
   Future<void> createDBEntry() async {
+    User? user = getCurrentUser();
     try {
-      await FirebaseFirestore.instance.collection("users").add({
+      await FirebaseFirestore.instance.collection("users").doc(user!.uid).set({
         'firstName': firstNameController.text.trim(),
         'lastName': lastNameController.text.trim(),
         'email': emailController.text.trim(),

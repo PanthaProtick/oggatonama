@@ -1,7 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:oggatonama/fetch_userdata.dart';
+import 'package:oggatonama/user_class.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({super.key});
+
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  final AuthServices _authServices = AuthServices();
+  late UserInformation _userInformation;
+  bool isFetching = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    try {
+        String? uid = _authServices.getCurrentUserUID();
+        print("Current User UID: $uid"); // Debug
+
+        if (uid == null) {
+            throw Exception("User not logged in");
+        }
+
+        UserInformation userData = await _authServices.userInformation(uid);
+        print("Fetched User Data: ${userData.toString()}"); // Debug
+
+        setState(() {
+            _userInformation = userData;
+            isFetching = false;
+        });
+    } catch (e) {
+        print('Fetch Data Error: $e'); // Debug
+        setState(() {
+            isFetching = false;
+        });
+    }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +63,14 @@ class Profile extends StatelessWidget {
         ),
         
       ),
-      body: Center(
+      body: isFetching 
+      ? Center(child: CircularProgressIndicator())
+      : userInfo()
+    );
+  }
+
+  Widget userInfo() {
+    return Center(
         child: Column(
           children: [
             Icon(
@@ -29,14 +78,14 @@ class Profile extends StatelessWidget {
               size: 150,
             ),
             Text(
-              'Sajid Al Amin',
+              '${_userInformation.firstName} ${_userInformation.lastName}',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 25
               ), // set name from database
             ),
             SelectableText(
-              'sajid@gmail.com'
+              _userInformation.email
             ),
             SizedBox(height: 10),
             Container(
@@ -57,11 +106,11 @@ class Profile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    customRow('Nid:', '1969276376237'),
+                    customRow('Nid:', _userInformation.nid),
                     SizedBox(height: 20),
-                    customRow('Phone: ', '01712456732'),
+                    customRow('Phone: ', _userInformation.phone),
                     SizedBox(height: 20),
-                    customRow('Body Reported:', '11'),
+                    customRow('Body Reported:', '0'),
                     SizedBox(height: 20),
                     customRow('Body Claimed:', '0')
                   ],
@@ -70,8 +119,7 @@ class Profile extends StatelessWidget {
             )
           ],
         ),
-      ),
-    );
+      );
   }
 
   Widget customRow(String txt1, txt2) {
